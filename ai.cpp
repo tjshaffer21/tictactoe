@@ -19,35 +19,26 @@ inline bool AI::isFull(char* brd) {
 char AI::getPiece()       { return piece; }
 void AI::run(char *board) {
     char *temp;
-    size_t i, j;
-    list<char *> *pos = minimax(board, 10);
-    
-    if(pos->size() == 1) {
-        temp = pos->front();
-        pos->pop_front();
-        for(size_t i = 0; i < BOARD_SIZE; i++) {
-            board[i] = temp[i];
-        }
-        delete temp;
-    } else {
-        int rnd = 0;// rand() % pos->size();
-        
-        i = 0;
+    size_t i;
+    list<char *> *pos = minimax(board);
+
+    temp = pos->front();
+    pos->pop_front();
+    for(size_t i = 0; i < BOARD_SIZE; i++) {
+        board[i] = temp[i];
+    }
+    delete temp;
+
+    if(pos->size() >= 0) {
         while(!pos->empty()) {
             temp = pos->front();
             pos->pop_front();
             
-            if(i == rnd) {
-                for(j = 0; j < BOARD_SIZE; j++) {
-                    board[j] = temp[j];
-                }            
-            }
-            
             delete temp;
-            
-            i++;
+
         }
     }
+
     delete pos;
 }
     
@@ -83,20 +74,20 @@ list<char *> * AI::minimax(char *node) {
 int AI::minimaxSearch(char *node, char p) {
     size_t i;
     int wl = winlosedraw(node);
-	if(wl == 1)    { return 1;  } 
-    if(wl == -1)   { return -1; }
-    if(wl == 0)    { return 0;  }
+	if(wl == 1)  { return 1;  } 
+    if(wl == -1) { return -1; }
+    if(wl == 0)  { return 0;  }
 
-    int alpha = numeric_limits<int>::min();
+    int alpha;
+    
+    (p == piece) ? (alpha = numeric_limits<int>::min()) : 
+        (alpha = numeric_limits<int>::max());
     for(i = 0; i < BOARD_SIZE; i++) {
         if(node[i] == B) {
             node[i] = p;
             
-            if(p == piece) {
-                alpha = max(alpha, minimaxSearch(node, oppiece));
-            } else {
-                alpha = -max(alpha, minimaxSearch(node, piece));
-            }
+            (p == piece) ? (alpha = max(alpha, minimaxSearch(node, oppiece))) :
+                (alpha = min(alpha, minimaxSearch(node, piece)));
             
             node[i] = B;
         }
