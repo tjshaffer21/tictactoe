@@ -1,7 +1,6 @@
 #ifndef __AI_H__
 #define __AI_H__
 #include <algorithm>
-#include <time.h>
 #include <cstdlib>
 #include <limits>
 #include <list>
@@ -54,7 +53,18 @@ class AI {
 
   
     public:
+        /**********************************************************************
+         *  Constructor.                                                      *
+         *  @param char - Piece used for AI.                                  *
+         *  @param char - Piece used for opponent.                            *
+         *********************************************************************/
         AI(char, char);
+        
+        /**********************************************************************
+         *  Runs the AI algorithm.                                            *
+         *  @param char *                                                     *
+         *  @note modifies the board that array that was passed.              *
+         *********************************************************************/
         void run(char *);
         char getPiece();
 };
