@@ -3,8 +3,6 @@
 AI::AI(char piece, char oppiece) {
 	this->piece   = piece;
     this->oppiece = oppiece;
-    
-    srand(time(NULL));
 }
 
 inline bool AI::isFull(char* brd) {
@@ -29,16 +27,13 @@ void AI::run(char *board) {
     }
     delete temp;
 
-    if(pos->size() >= 0) {
-        while(!pos->empty()) {
-            temp = pos->front();
-            pos->pop_front();
-            
-            delete temp;
+    while(!pos->empty()) {
+        temp = pos->front();
+        pos->pop_front();
+        
+        delete temp;
 
-        }
     }
-
     delete pos;
 }
     
@@ -48,7 +43,7 @@ list<char *> * AI::minimax(char *node) {
     int value;
     char *temp;
     
-    int alpha = -1;// numeric_limits<int>::min();
+    int alpha = -1;
     list<char *> *pos = new list<char *>();
     for(i = 0; i < BOARD_SIZE; i++) {
         if(node[i] == B) {
@@ -99,9 +94,10 @@ char AI::winlosedraw(char *board) {
     size_t i;
     bool empty = false;
 	for(i = 0; i < BOARD_SIZE; i++) {
-		if(board[i] == B) {
-			empty = true;
-		}
+		if(board[i] == B) { 
+            empty = true; 
+            break;
+        }
 	}
     
     if(empty == false) { return 0; }

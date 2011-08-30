@@ -25,42 +25,43 @@ Board::Board(sf::RenderWindow *win) {
     }
 }
 
-Board::~Board() {}
-
 int Board::checkWinCondition() {
-     int i;
-     bool empty = false;
-     for(i = 0; i < BOARD_SIZE; i++) {
+    size_t i;
+    bool empty = false;
+    for(i = 0; i < BOARD_SIZE; i++) {
         if(board[i] == B) {
             empty = true;
             break;
         }
-     }
+    }
      
-     if(empty == false) { match = 0; }
-     
-     // x := 2, o := 3
-     // el1 + el2 + el3 = 6 then X wins
-     // el1 + el2 + el3 = 9 then O wins
-     char h1 = board[0] + board[1] + board[2];
-     char h2 = board[3] + board[4] + board[5];
-     char h3 = board[6] + board[7] + board[8];
-     
-     char v1 = board[0] + board[3] + board[6];
-     char v2 = board[1] + board[4] + board[7];
-     char v3 = board[2] + board[5] + board[8];
-     
-     char d1 = board[0] + board[4] + board[8];
-     char d2 = board[2] + board[4] + board[6];
+    if(empty == false) { 
+        match = 0; 
+    } else {
+        // el1 + el2 + el3 = 6 then X wins
+        // el1 + el2 + el3 = 9 then O wins
+        char h1 = board[0] + board[1] + board[2];
+        char h2 = board[3] + board[4] + board[5];
+        char h3 = board[6] + board[7] + board[8];
+        
+        char v1 = board[0] + board[3] + board[6];
+        char v2 = board[1] + board[4] + board[7];
+        char v3 = board[2] + board[5] + board[8];
+        
+        char d1 = board[0] + board[4] + board[8];
+        char d2 = board[2] + board[4] + board[6];
 
-     if(h1 == 6 || h2 == 6 || h3 == 6 || v1 == 6 || v2 == 6 || v3 == 6 ||
-        d1 == 6 || d2 == 6) {
-           match = 2;
-     } else if (h1 == 9 || h2 == 9 || h3 == 9 || v1 == 9 || v2 == 9 || 
-        v3 == 9 || d1 == 9 || d2 == 9) {
-          match = 1;
-     }
- 
+        char xwin = X * 3;
+        char owin = O * 3;
+        if(h1 == xwin || h2 == xwin || h3 == xwin || v1 == xwin || v2 == xwin || 
+          v3 == xwin || d1 == xwin || d2 == xwin) {
+            match = 2;
+        } else if (h1 == owin || h2 == owin || h3 == owin || v1 == owin || 
+          v2 == owin || v3 == owin || d1 == owin || d2 == owin) {
+            match = 1;
+        }
+    }
+    
     switch(match) {
         case 0:
         case 1:
@@ -232,7 +233,6 @@ void Board::checkEvents(sf::Event *event) {
             }
         }
     } else {
-
         if((event->Type == sf::Event::MouseButtonPressed) &&
             (event->MouseButton.Button == sf::Mouse::Left)) {
               short xy = getXRegion(event->MouseButton.X) + BOARD_HEIGHT * 

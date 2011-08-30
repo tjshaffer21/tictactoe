@@ -70,7 +70,6 @@ class Board {
          *          drawing purposes.                                         *
          *********************************************************************/
         Board(sf::RenderWindow *);
-        ~Board();
       
         /**********************************************************************
          * Convert screen coordinates to board coordinates.                   *
